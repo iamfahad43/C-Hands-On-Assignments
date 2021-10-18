@@ -1,2 +1,2 @@
 all:
-	g++ test.cpp -o tst
+	g++ TempParser.cpp -o tmpprsr
