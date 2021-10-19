@@ -3,28 +3,6 @@
 
 using namespace std;
 
-/*
-void ProcessJson(string str) {
-	size_t pos = str.find("["):
-		if (pos == string::npos) {
-			return 0;
-		};
-	ProcessJson(str) {
-		size_t pos = str.find("{"):
-			if (pos == string::npos) {
-				return 0;
-			};
-		ProcessJson(str) {
-			size_t pos = str.find(","):
-				if (pox == string::npos) {
-					return 0;
-				}
-		}
-	}
-}
-*/
-
-
 int main() {
 	string json = "[{\"key1\":\"val1\",\"key2\":\"val2\"},{\"key3\":\"val3\",\"key4\":\"val4\"}]";
         cout << "Json: " <<json << endl;
