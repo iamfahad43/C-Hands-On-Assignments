@@ -47,9 +47,9 @@ void JsonParser(const std::string &json, int &idx, int level=0){
 }
 
 int main() {
-	//std::string str = "{\"session\": \"NORMAL\",\"duration\": \"GOOD_TILL_CANCEL\",\"orderType\": \"LIMIT\",\"price\": \"1310.00\",\"orderLegCollection\":                   [{\"instruction\": \"BUY\",\"instrument\": {\"assetType\": \"EQUITY\",\"symbol\": \"GOOG\"},\"quantity\": 1}],\"orderStrategyType\": \"TRIGGER\",                        \"childOrderStrategies\": [{\"orderStrategyType\": \"OCO\",\"childOrderStrategies\": [{\"session\": \"NORMAL\",\"duration\": \"GOOD_TILL_CANCEL\",\"orderType\":         \"LIMIT\",\"price\": \"1400.00\",\"orderLegCollection\": [{\"instruction\": \"SELL\",\"instrument\": {\"assetType\": \"EQUITY\",\"symbol\": \"GOOG\"},                   \"quantity\": 1}]},{\"session\": \"NORMAL\",\"duration\": \"GOOD_TILL_CANCEL\",\"orderType\": \"STOP_LIMIT\",\"stopPrice\": \"1250.00\",\"orderLegCollection             \": [{\"instruction\": \"SELL\",\"instrument\": {\"assetType\": \"EQUITY\",\"symbol\": \"GOOG\"},\"quantity\": 1}]}]}]}";
+	std::string str = "{\"session\": \"NORMAL\",\"duration\": \"GOOD_TILL_CANCEL\",\"orderType\": \"LIMIT\",\"price\": \"1310.00\",\"orderLegCollection\":[{\"instruction\": \"BUY\",\"instrument\": {\"assetType\": \"EQUITY\",\"symbol\": \"GOOG\"},\"quantity\": 1}],\"orderStrategyType\": \"TRIGGER\", \"childOrderStrategies\": [{\"orderStrategyType\": \"OCO\",\"childOrderStrategies\": [{\"session\": \"NORMAL\",\"duration\": \"GOOD_TILL_CANCEL\",\"orderType\": \"LIMIT\",\"price\": \"1400.00\",\"orderLegCollection\": [{\"instruction\": \"SELL\",\"instrument\": {\"assetType\": \"EQUITY\",\"symbol\": \"GOOG\"}, \"quantity\": 1}]},{\"session\": \"NORMAL\",\"duration\": \"GOOD_TILL_CANCEL\",\"orderType\": \"STOP_LIMIT\",\"stopPrice\": \"1250.00\",\"orderLegCollection\": [{\"instruction\": \"SELL\",\"instrument\": {\"assetType\": \"EQUITY\",\"symbol\": \"GOOG\"},\"quantity\": 1}]}]}]}";
 
-	std::string str = "[{\"12\":\"34\", \"key1\":\"key1\"},{\"key2\":\"val2\", \"key3\":\"val3\"}]";
+	//std::string str = "[{\"12\":\"34\", \"key1\":\"key1\"},{\"key2\":\"val2\", \"key3\":\"val3\"}]";
 	//std::string str = "[12345, [[89441,1631148456164,0.018,7254.7], [9441,1631148456164,0.019,7254.8]]";
         int idx = 0;
       	std::cout << "\nThe json array we are parsing is: \n\n" << str <<"\n" << std::endl;

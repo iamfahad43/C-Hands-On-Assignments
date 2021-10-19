@@ -1,2 +1,2 @@
 all:
-	g++ Parser.cpp -g -o parser
+	g++ JsonParser.cpp -g -o jsnprsr
