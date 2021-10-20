@@ -28,7 +28,9 @@ int ShowValue(T str, T token) {
 */
 
 int main() {
-	string str = "{\"key1\":\"value1\",[\"key2\":\"value2\",\"key3\":\"value3\"],\"key4\":\"value4\"}";
+	string str = "{\'key\':[val1, val2, val3, val4], \'key2\':[val5, val6, val7]}";
+
+	//string str = "{\"key1\":\"value1\",[\"key2\":\"value2\",\"key3\":\"value3\"],\"key4\":\"value4\"}";
         string token;
 	//string str = "{ \"event\": \"subscribe\", \"channel\": \"book\", \"symbol\": \"tBTCUSD\", \"int\": \"4555\" }";
 	cout << "\nHere is our json string\n" << str << endl;
@@ -46,7 +48,7 @@ int main() {
 		return false;
 	}
 
-	size_t pos3 = str.find("\"", pos2+1);
+	size_t pos3 = str.find("", pos2+1);
 	if (pos3==string::npos){
 		return false;
 	}
