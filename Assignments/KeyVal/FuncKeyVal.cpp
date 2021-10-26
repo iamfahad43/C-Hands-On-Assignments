@@ -13,6 +13,7 @@ int SetDetails(multimap<string, int> mlmap) {
 	cin >> val;
 	mlmap.insert(make_pair(key,val));
 	cout << "\nYour information is logged Successfully" << endl;
+	return 1;
 }
 
 void GetDetails(multimap<string, int> mlmap) {

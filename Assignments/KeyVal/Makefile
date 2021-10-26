@@ -1,2 +1,2 @@
 all:
-	g++ TempParser.cpp -o tmpprsr
+	g++ FuncKeyVal.cpp -o funckeyval
