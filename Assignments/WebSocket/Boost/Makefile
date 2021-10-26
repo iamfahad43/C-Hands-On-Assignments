@@ -1,2 +1,2 @@
 all:
-	g++ WebSocketClient.cpp -o wsclient -lboost_system -lpthread
+	g++ WebSocketClient.cpp -o wsclient -lssl -lcrypto -lpthread
