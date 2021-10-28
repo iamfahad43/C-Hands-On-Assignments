@@ -6,7 +6,9 @@
 #include <boost/beast/websocket/ssl.hpp>
 #include <cstdlib>
 #include <iostream>
+#include <typeinfo>
 #include <string>
+#include <vector>
 #include <openssl/sha.h>
 #include <openssl/hmac.h>
 #include <openssl/evp.h>
@@ -20,6 +22,67 @@ namespace http = beast::http;           // from <boost/beast/http.hpp>
 namespace websocket = beast::websocket; // from <boost/beast/websocket.hpp>
 namespace net = boost::asio;            // from <boost/asio.hpp>
 using tcp = boost::asio::ip::tcp;       // from <boost/asio/ip/tcp.hpp>
+
+// @ Return ASKS
+template<typename F>
+F RetAsks(F aMsg) {
+	std::string null = "NULL";
+        F name = "asks";
+        size_t pos1 = aMsg.find(name);
+        if (pos1==std::string::npos)
+                return null;
+        size_t pos2 = aMsg.find(':', pos1+1);
+        if (pos2==std::string::npos)
+                return null;
+
+        size_t pos3 = aMsg.find('}', pos2+1);
+        if (pos3==std::string::npos)
+                return null;
+
+        return aMsg.substr(pos2+1, ((pos3-pos2)-1));
+}
+
+// @ Return BIDS
+template<typename F>
+F RetBids(F aMsg) {
+	std::string null = "NULL";
+        F name = "bids";
+        size_t pos1 = aMsg.find(name);
+        if (pos1==std::string::npos)
+                return null;
+        size_t pos2 = aMsg.find(':', pos1+1);
+        if (pos2==std::string::npos)
+                return null;
+
+        size_t pos3 = aMsg.find(']', pos2+1);
+        if (pos3==std::string::npos)
+                return null;
+
+        size_t pos4 = aMsg.find(',', pos3+1);
+        if (pos3==std::string::npos)
+                return null;
+
+        return aMsg.substr(pos2+1, ((pos4-pos2)-1));
+}
+
+// @ Return Instrument Name
+std::string RetInstrument(const std::string &aMsg) {
+	std::string null = "NULL";
+	std::string token = "instrument_name";
+        size_t pos1 = aMsg.find(token);
+        if (pos1==std::string::npos)
+                return null;
+
+        size_t pos2 = aMsg.find(':', pos1+1);
+        if (pos2==std::string::npos)
+                return null;
+
+        size_t pos3 = aMsg.find(',', pos2+1);
+        if (pos3==std::string::npos)
+                return null;
+        return aMsg.substr(pos2+1, (((pos3-pos2))-1));
+}
+
 
 // Sends a WebSocket message and prints the response
 int main(int argc, char** argv)
@@ -42,19 +105,6 @@ int main(int argc, char** argv)
         auto const text = R"(
 {"method": "public/subscribe", "params": {"channels": ["trades.future.BTC.raw", "book.BTC-PERPETUAL.raw"]},"jsonrpc": "2.0","id": 4}
 )";
-/******
-        auto const text = R"(
-{
-  "method": "public/get_instruments",
-  "params": {
-    "currency": "BTC",
-    "kind": "future"
-  },
-  "jsonrpc": "2.0",
-  "id": 0
-}
-)";
-*******/
         // The io_context is required for all I/O
         net::io_context ioc;
 
@@ -86,29 +136,35 @@ int main(int argc, char** argv)
                         " websocket-client-coro");
             }));
 
-
         // Perform the websocket handshake
         ws.handshake(host, "/ws/api/v2");
         // Send the message
         ws.write(net::buffer(std::string(text)));
-        // This buffer will hold the incoming message
-        //beast::flat_buffer buffer;
 
-	while(true) {
+        while(true) {
 
-        	beast::flat_buffer buffer;
+                // This buffer will hold the incoming message
+                beast::flat_buffer buffer;
 
-        	// Read a message into our buffer
-        	ws.read(buffer);
+                // Read a message into our buffer
+                ws.read(buffer);
 
-        	std::cout << beast::make_printable(buffer.data()) << std::endl;
-		
-	}
+                // The make_printable() function helps print a ConstBufferSequence
+                //std::cout << beast::make_printable(buffer.data()) << std::endl;
+
+		// The buffers_to_string() funcion convert the buffer data into string
+                //std::cout << beast::buffers_to_string(buffer.data()) << std::endl;
+
+		std::string str1 = beast::buffers_to_string(buffer.data());
+		std::cout << "\n\nInstrument Name: " << RetInstrument(str1) << std::endl;
+		std::cout << "Bids: " << RetBids(str1) << std::endl;
+		std::cout << "Asks: " << RetAsks(str1) << std::endl;
+        }
+
         // Close the WebSocket connection
         ws.close(websocket::close_code::normal);
         // If we get here then the connection is closed gracefully
 
-        // The make_printable() function helps print a ConstBufferSequence
     }
     catch(std::exception const& e)
     {
@@ -118,5 +174,4 @@ int main(int argc, char** argv)
     return EXIT_SUCCESS;
 }
            
-
 
